@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.small
+    Description: Enter instance size. Default is t2.medium.
+  AMI:
+    Type: String
+    Default: ami-053b0d53c279acc90
+    Description: The Ubuntu AMI to use.
+  Key:
+    Type: String
+    
+    Description: Enter key name
+  VPC:
+    Type: String
+    
+    Description: Default VPC ID.
+  Subnet:
+    Type: String
+    
+    Description: Subnet ID.
+
+Resources:
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "TomcatSecurityGroup"
+      GroupDescription: "Security Group for jenkins server"
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp:  0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '8080'
+          ToPort: '8080'
+          CidrIp:  0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+  ElasticIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      InstanceId: !Ref tomcat
+  tomcat:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      ImageId: !Ref AMI
+      InstanceType:
+        Ref: InstanceTypeParameter
+      KeyName: !Ref Key
+      SubnetId: !Ref Subnet
+      SecurityGroupIds:
+        - Ref: InstanceSecurityGroup
+      BlockDeviceMappings:
+        - DeviceName: /dev/sda1
+          Ebs:
+            VolumeSize: 8
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          sudo useradd -m -d /opt/tomcat -U -s /bin/false tomcat
+          sudo apt-get update -y
+          sudo apt-get install openjdk-17-jdk -y
+          cd /tmp
+          wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.15/bin/apache-tomcat-10.1.15.tar.gz
+          sudo tar xzvf apache-tomcat-10*tar.gz -C /opt/tomcat --strip-components=1
+          sudo chown -R ubuntu:ubuntu /opt/tomcat/
+          sudo chmod -R u+x /opt/tomcat/bin
+      Tags:
+        - Key: Name
+          Value: tomcat
+Outputs:
+  PublicIp:
+    Value:
+      Fn::GetAtt:
+        - tomcat
+        - PublicIp
+    Description: Server's PublicIp Address
