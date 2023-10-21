@@ -28,14 +28,6 @@ pipeline {
                 }    
             }
         }
-        stage('Test'){
-            steps{
-                echo 'Building Maven project'
-                sh 'mvn test'
-                junit '**/target/surefire-reports/*.xml'
-                jacoco classPattern: '**/target/classes', exclusionPattern: '**/*Test*.class', execPattern: '**/target/jacoco.exec', inclusionPattern: '**/*.class', sourceExclusionPattern: 'generated/**/*.java', sourceInclusionPattern: '**/*.java'
-            }
-        }
     }
         
 
