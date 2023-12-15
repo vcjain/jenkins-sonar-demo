@@ -17,4 +17,5 @@ URL : https://sonarcloud.io/login
 
 - Add Sonar scanner plugin in Jenkins
 - Setup SonarServer in the Systems in Jenkins
+-  -  Check Environment Variable
 
