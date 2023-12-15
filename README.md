@@ -19,3 +19,5 @@ URL : https://sonarcloud.io/login
 - Setup SonarServer in the Systems in Jenkins
 -  -  Check Environment Variable
 
+## Trobleshooting: 
+-If you are not able to get your analysis on SonarQube Dashboard, then try to create your a project In SonarQube with some name and key and use same key in your jenkinsfile. 
