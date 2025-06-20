@@ -1,4 +1,4 @@
-# jenkins SonarQube Demo f
+# jenkins SonarQube Demo
 
 
 ## Using Sonar Cloud
