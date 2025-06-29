@@ -10,12 +10,13 @@ URL : https://sonarcloud.io/login
 - Create a new Organization
 - Navigate to Security Tab
 - Generate a new Token. You can also give your preferred name.
-- Add secret text Token as Credential in the Jenkins. (Give Id as sonar-token, to match the Jenkinsfile steps) 
+- Add secret text Token as Credential in the Jenkins. (Give Id as sonar-token, to match the Jenkinsfile steps)
+- Add a new Project manually with projectkey as sonardemo 
 
 
 ## Configuring Sonar in the Jenkins
 
-- Add Sonar scanner, Jacoco plugin in Jenkins
+- Add SonarQube scanner, Jacoco plugin in Jenkins
 - Setup SonarServer in the Systems in Jenkins
 -  -  Check Environment Variable
    -  Give your preferred name of SonarServer, in Jenkinsfile we will referring it. (sonarcloud)
