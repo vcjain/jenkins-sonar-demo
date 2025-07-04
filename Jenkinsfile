@@ -44,10 +44,10 @@ pipeline {
                     withSonarQubeEnv(installationName: 'Sonarcloud', credentialsId: 'Varun-Sonar-Token') { 
                         script {
                             if (isUnix()){
-                                sh 'mvn sonar:sonar -Dsonar.projectKey=varun-sonar_demo -Dsonar.organization=Varun-Sonar -Dsonar.host.url=https://sonarcloud.io'
+                                sh 'mvn sonar:sonar -Dsonar.projectKey=varun-sonar_demo -Dsonar.organization=varun-sonar -Dsonar.host.url=https://sonarcloud.io'
                                 sh 'sleep 50'
                             }else{
-                                bat 'mvn sonar:sonar -Dsonar.projectKey=varun-sonar_demo -Dsonar.organization=Varun-Sonar -Dsonar.host.url=https://sonarcloud.io'
+                                bat 'mvn sonar:sonar -Dsonar.projectKey=varun-sonar_demo -Dsonar.organization=varun-sonar -Dsonar.host.url=https://sonarcloud.io'
                                 bat 'sleep 50'
                             }
                         }
