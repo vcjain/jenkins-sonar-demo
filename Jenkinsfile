@@ -13,13 +13,26 @@ pipeline {
         stage('Build'){
             steps{
                 echo 'Building Maven project'
-                sh 'mvn clean compile'
+                script{
+                    if(isUnix()){    
+                        sh 'mvn clean compile'
+                    }else{
+                        bat 'mvn clean compile'
+                    }
+                }
             }
         }
         stage('Test'){
             steps{
                 echo 'Building Maven project'
-                sh 'mvn test'
+                
+                script {
+                    if (isUnix()){
+                        sh 'mvn test'
+                    }else{
+                        bat 'mvn test'
+                    } 
+                }
                 junit '**/target/surefire-reports/*.xml'
                 jacoco classPattern: '**/target/classes', exclusionPattern: '**/*Test*.class', execPattern: '**/target/jacoco.exec', inclusionPattern: '**/*.class', sourceExclusionPattern: 'generated/**/*.java', sourceInclusionPattern: '**/*.java'
             }
@@ -27,10 +40,17 @@ pipeline {
         stage('SonarQube Analysis'){
             steps{
                 echo 'Scanning Maven project'
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                withCredentials([string(credentialsId: 'Varun-Sonar-Token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv(installationName: 'sonarcloud', credentialsId: 'sonar-token') { 
-                        sh 'mvn sonar:sonar -Dsonar.projectKey=sonardemo -Dsonar.organization=vcjain -Dsonar.host.url=https://sonarcloud.io'
-                        sh 'sleep 50'
+                        script {
+                            if (isUnix()){
+                                sh 'mvn sonar:sonar -Dsonar.projectKey=sonardemo -Dsonar.organization=vcjain -Dsonar.host.url=https://sonarcloud.io'
+                                sh 'sleep 50'
+                            }else{
+                                bat 'mvn sonar:sonar -Dsonar.projectKey=sonardemo -Dsonar.organization=vcjain -Dsonar.host.url=https://sonarcloud.io'
+                                bat 'sleep 50'
+                            }
+                        }
                         
                     }
                 }    
