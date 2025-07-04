@@ -41,7 +41,7 @@ pipeline {
             steps{
                 echo 'Scanning Maven project'
                 withCredentials([string(credentialsId: 'Varun-Sonar-Token', variable: 'SONAR_TOKEN')]) {
-                    withSonarQubeEnv(installationName: 'Sonarcloud', credentialsId: 'sonar-token') { 
+                    withSonarQubeEnv(installationName: 'Sonarcloud', credentialsId: 'Varun-Sonar-Token') { 
                         script {
                             if (isUnix()){
                                 sh 'mvn sonar:sonar -Dsonar.projectKey=varun-sonar_demo -Dsonar.organization=Varun-Sonar -Dsonar.host.url=https://sonarcloud.io'
