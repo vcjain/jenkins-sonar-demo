@@ -48,10 +48,10 @@ pipeline {
                                 sh 'sleep 50'
                             }else{
                                 bat 'mvn sonar:sonar -Dsonar.projectKey=varun-sonar_demo -Dsonar.organization=varun-sonar -Dsonar.host.url=https://sonarcloud.io'
-                                bat 'ping -n 51 127.0.0.1 > nul'
+                                
                             }
                         }
-                        
+                        sleep 50
                     }
                 }    
             }
